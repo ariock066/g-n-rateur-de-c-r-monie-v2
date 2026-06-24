@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Générateur de Célébration Liturgique",
+  "description": "Concevez des célébrations et célébrations liturgiques clés en main pour votre établissement scolaire avec export Word et code d\u0027intégration Google Sites.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
