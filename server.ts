@@ -3,6 +3,7 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import fs from "fs";
 
 dotenv.config();
 
@@ -126,15 +127,19 @@ Rédige l'ensemble du déroulé en français, de manière complète et riche, sa
     }
   });
 
+  const distPath = path.join(process.cwd(), "dist");
+  const isDev = process.env.NODE_ENV !== "production" || !fs.existsSync(distPath) || (process.argv[1] && process.argv[1].endsWith("server.ts"));
+
   // Vite development middleware vs Static production serving
-  if (process.env.NODE_ENV !== "production") {
+  if (isDev) {
+    console.log("Démarrage en mode développement avec middleware Vite...");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(process.cwd(), "dist");
+    console.log("Démarrage en mode production (fichiers statiques depuis dist)...");
     app.use(express.static(distPath));
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
